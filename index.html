@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GridPool | Decentralized reward sharing for sovereign Bitcoin miners</title>
+    <meta
+      name="description"
+      content="GridPool is a decentralized reward-sharing protocol for sovereign Bitcoin miners. Keep your own block templates, share high-difficulty proofs, and reduce solo-mining variance without a custodial pool wallet."
+    />
+    <meta name="theme-color" content="#080a0d" />
+    <meta property="og:title" content="GridPool" />
+    <meta
+      property="og:description"
+      content="The pool that never touches the payout. Decentralized reward sharing for sovereign Bitcoin miners."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="assets/img/gridpool-mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/gridpool.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="GridPool home">
+        <img src="assets/img/gridpool-mark.svg" alt="" />
+        <span>GridPool</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#connect">Connect</a>
+        <a href="#resources">Resources</a>
+        <a href="https://github.com/gridlabs-science/boot-protocol" rel="noreferrer">Source</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-backdrop" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Open-source Bitcoin mining infrastructure</p>
+          <h1 id="hero-title">The pool that never touches the payout.</h1>
+          <p class="hero-copy">
+            GridPool lets sovereign miners share payout variance while each miner
+            keeps building their own Bitcoin block templates. It is not a
+            custodial pool wallet, not a sharechain, and not a Stratum V1 pool
+            endpoint.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="#connect">Connect your DATUM</a>
+            <a class="button" href="#watch">Watch the explainer</a>
+            <a class="button" href="https://github.com/gridlabs-science/boot-protocol" rel="noreferrer">View source</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Public beta status">
+          <strong>Public beta</strong>
+          <span>Mainnet soft launch and Testnet4 validation networks are separated.</span>
+          <a href="https://main.gridpool.net" rel="noreferrer">Mainnet node UI</a>
+          <a href="https://test.gridpool.net" rel="noreferrer">Testnet4 node UI</a>
+        </aside>
+      </section>
+
+      <section class="signal-strip" aria-label="GridPool core properties">
+        <div>
+          <strong>No custodial wallet</strong>
+          <span>Rewards are paid directly from coinbase outputs.</span>
+        </div>
+        <div>
+          <strong>Sovereign templates</strong>
+          <span>Miners keep transaction selection local.</span>
+        </div>
+        <div>
+          <strong>Verified proof-of-work</strong>
+          <span>Shares are ranked by difficulty, not by identity.</span>
+        </div>
+        <div>
+          <strong>DATUM today</strong>
+          <span>Hydrapool and direct HTTP integrations are next.</span>
+        </div>
+      </section>
+
+      <section class="section section-split" id="watch" aria-labelledby="watch-title">
+        <div class="section-heading">
+          <p class="eyebrow">Start here</p>
+          <h2 id="watch-title">Seven minutes to the core idea.</h2>
+          <p>
+            GridPool takes the variance-reduction goal of a mining pool and
+            removes the central payout wallet. Miners coordinate on payout lists
+            using Bitcoin-style proof-of-work shares.
+          </p>
+          <div class="section-actions">
+            <a class="button" href="GridPool__Decentralizing_Pools.mp4">Download video</a>
+            <a class="button" href="GridPool_Architecture.pdf">Read the slide deck</a>
+          </div>
+        </div>
+        <div class="video-card">
+          <video controls preload="metadata" playsinline>
+            <source src="GridPool__Decentralizing_Pools.mp4" type="video/mp4" />
+            Your browser does not support embedded video.
+          </video>
+        </div>
+      </section>
+
+      <section class="section" id="how" aria-labelledby="how-title">
+        <div class="section-heading">
+          <p class="eyebrow">Shared lottery mining</p>
+          <h2 id="how-title">How GridPool works</h2>
+          <p>
+            GridPool does not try to reproduce traditional pool accounting.
+            Instead, it lets miners compete for slots in the next coinbase payout
+            list by submitting high-difficulty shares that any peer can verify.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <span>01</span>
+            <h3>Build your own block</h3>
+            <p>
+              Your mining stack constructs a Bitcoin block template locally. The
+              block pays slot 0 to the block finder and shares the rest across the
+              current Winners List.
+            </p>
+          </article>
+          <article class="step-card">
+            <span>02</span>
+            <h3>Submit high-difficulty proofs</h3>
+            <p>
+              When your miner finds a share strong enough to compete for the
+              on-deck list, your node relays the header, coinbase, and Merkle
+              proof needed for trustless verification.
+            </p>
+          </article>
+          <article class="step-card">
+            <span>03</span>
+            <h3>Rank by verified work</h3>
+            <p>
+              Peers verify the proof-of-work and attribute the share from the
+              slot-0 coinbase output. Identities do not vote, so Sybil accounts do
+              not create extra payout weight.
+            </p>
+          </article>
+          <article class="step-card">
+            <span>04</span>
+            <h3>Pay from the coinbase</h3>
+            <p>
+              When a GridPool miner finds a real Bitcoin block, payouts happen
+              directly from that block's coinbase transaction. There is no central
+              wallet waiting to distribute funds later.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section compare-section" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <p class="eyebrow">Different tradeoffs</p>
+          <h2 id="compare-title">Not a normal pool. Not pure solo.</h2>
+        </div>
+        <div class="comparison-grid">
+          <article>
+            <h3>Compared with classic pools</h3>
+            <p>
+              GridPool does not collect block rewards into a pool wallet, does not
+              decide your transaction template, and does not pay from a centralized
+              ledger. The tradeoff is higher variance than FPPS or PPLNS.
+            </p>
+          </article>
+          <article>
+            <h3>Compared with sharechains</h3>
+            <p>
+              GridPool avoids maintaining a second blockchain. There is no
+              sharechain history to reorg, privately mine, or 51 percent attack as
+              a separate consensus object.
+            </p>
+          </article>
+          <article>
+            <h3>Compared with solo mining</h3>
+            <p>
+              GridPool keeps the local-control feel of solo mining but shares the
+              block subsidy across recent high-difficulty contributors, reducing
+              payout variance by up to roughly 300x.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section connect-section" id="connect" aria-labelledby="connect-title">
+        <div class="section-heading">
+          <p class="eyebrow">Public beta connection guide</p>
+          <h2 id="connect-title">Connect through DATUM, not raw Stratum V1.</h2>
+          <p>
+            GridPool is built for sovereign miners who can construct their own
+            block templates. ASICs should connect to your DATUM gateway. DATUM
+            then talks to a GridPool Boot node.
+          </p>
+        </div>
+
+        <div class="connect-layout">
+          <article class="connect-card connect-card-primary">
+            <div class="card-topline">
+              <span class="status status-live">Mainnet beta</span>
+              <span>Main chain</span>
+            </div>
+            <h3>Mine real Bitcoin</h3>
+            <p>
+              Use this when you understand the beta status and want to point a
+              DATUM gateway at the public mainnet network.
+            </p>
+            <a class="button button-primary" href="https://main.gridpool.net" rel="noreferrer">Open mainnet node UI</a>
+          </article>
+
+          <article class="connect-card">
+            <div class="card-topline">
+              <span class="status">Testnet4</span>
+              <span>Protocol testing</span>
+            </div>
+            <h3>Test round rotation</h3>
+            <p>
+              Use this for experiments, integrations, and real-trigger behavior
+              without risking mainnet funds.
+            </p>
+            <a class="button" href="https://test.gridpool.net" rel="noreferrer">Open testnet node UI</a>
+          </article>
+        </div>
+
+        <div class="instruction-grid" aria-label="Connection instructions">
+          <div>
+            <strong>1. Run DATUM</strong>
+            <p>
+              Configure DATUM with your payout address and a Bitcoin node capable
+              of building templates.
+            </p>
+          </div>
+          <div>
+            <strong>2. Open a node UI</strong>
+            <p>
+              Use the Connect DATUM panel on <code>main.gridpool.net</code> or
+              <code>test.gridpool.net</code> for the current Boot endpoint details.
+            </p>
+          </div>
+          <div>
+            <strong>3. Point ASICs at DATUM</strong>
+            <p>
+              Your miner talks Stratum to DATUM. Do not point raw Stratum V1
+              directly at this website or at the Boot WebUI.
+            </p>
+          </div>
+          <div>
+            <strong>4. Verify your address</strong>
+            <p>
+              Once shares arrive, the node UI should show your local hashrate and
+              whether your address is currently on the payout lists.
+            </p>
+          </div>
+        </div>
+
+        <aside class="notice-box">
+          <strong>Integrator note</strong>
+          <p>
+            Hydrapool support is planned. Other sovereign Stratum servers such as
+            CK Pool, Public Pool, Stratum V2 implementations, and FutureBit-style
+            stacks can integrate through the HTTP share-submission API.
+          </p>
+        </aside>
+      </section>
+
+      <section class="section" id="resources" aria-labelledby="resources-title">
+        <div class="section-heading">
+          <p class="eyebrow">Learn more</p>
+          <h2 id="resources-title">Resources for miners and implementers</h2>
+        </div>
+        <div class="resource-grid">
+          <a class="resource-card" href="GridPool 201_ Advanced Architectural Deep Dive.md">
+            <span>Markdown</span>
+            <strong>GridPool 201 advanced deep dive</strong>
+            <small>Architecture, game theory, networking, and tradeoffs.</small>
+          </a>
+          <a class="resource-card" href="GridPool_Architecture.pdf">
+            <span>PDF</span>
+            <strong>Architecture slide deck</strong>
+            <small>Shareable deck for reviewing the protocol structure.</small>
+          </a>
+          <a class="resource-card" href="GridPool_Architecture.pptx">
+            <span>PPTX</span>
+            <strong>Editable presentation</strong>
+            <small>Source slides for talks, demos, and technical discussion.</small>
+          </a>
+          <a class="resource-card" href="GridPool__Introduction_Brief.mp4">
+            <span>Video</span>
+            <strong>Introduction brief</strong>
+            <small>A shorter GridPool overview for first-pass context.</small>
+          </a>
+          <a class="resource-card" href="https://github.com/gridlabs-science/boot-protocol" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>Boot protocol source</strong>
+            <small>Node implementation, DATUM integration, WebUI, and docs.</small>
+          </a>
+        </div>
+      </section>
+
+      <section class="section deep-dive-section" aria-labelledby="deep-dive-title">
+        <div class="section-heading">
+          <p class="eyebrow">Advanced concepts</p>
+          <h2 id="deep-dive-title">GridPool 201</h2>
+          <p>
+            The text below is loaded from the advanced markdown file in this
+            folder. The source document is left untouched.
+          </p>
+        </div>
+        <article class="markdown-panel" id="advanced-markdown">
+          <p>Loading advanced notes...</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="https://gridlabs.science" rel="noreferrer">
+        <img src="assets/img/gridpool-mark.svg" alt="" />
+        <span>Grid Labs</span>
+      </a>
+      <div class="footer-links">
+        <a href="https://gridlabs.science" rel="noreferrer">Grid Labs</a>
+        <a href="https://github.com/gridlabs-science" rel="noreferrer">GitHub</a>
+        <a href="https://main.gridpool.net" rel="noreferrer">Mainnet UI</a>
+        <a href="https://test.gridpool.net" rel="noreferrer">Testnet UI</a>
+      </div>
+    </footer>
+
+    <script src="assets/js/markdown.js" defer></script>
+  </body>
+</html>

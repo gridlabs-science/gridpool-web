@@ -1,0 +1,20 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local preview and scratch files
+*.log
+*.tmp
+*.bak
+.env
+.env.*
+
+# Dependency/build directories if the static site later grows a toolchain
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/

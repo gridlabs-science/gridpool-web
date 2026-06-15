@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">GridPool mark</title>
+  <desc id="desc">A green grid with a central Bitcoin mining node motif.</desc>
+  <rect width="128" height="128" rx="18" fill="#040506"/>
+  <path d="M20 34h88M20 64h88M20 94h88M34 20v88M64 20v88M94 20v88" stroke="#203326" stroke-width="5"/>
+  <path d="M34 34h60v60H34z" fill="none" stroke="#58f07c" stroke-width="6"/>
+  <path d="M51 49h20c8 0 13 4 13 10 0 5-3 8-8 9 6 1 10 5 10 11 0 8-6 13-16 13H51V49z" fill="none" stroke="#ffb23f" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M61 41v58M72 41v58" stroke="#ffb23f" stroke-width="6" stroke-linecap="round"/>
+</svg>
