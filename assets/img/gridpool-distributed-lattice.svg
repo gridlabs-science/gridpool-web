@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <!-- Black background matching Grid Labs aesthetic -->
+  <rect width="1080" height="1080" fill="#000000"/>
+  
+  <!-- Angular structural brackets inspired by Grid Labs logo style (left side) -->
+  <g fill="#ffffff" stroke="#ffffff" stroke-width="6" stroke-linejoin="round">
+    <!-- Left upper bracket structure -->
+    <polygon points="140,180 140,320 200,320 200,260 260,260 260,180"/>
+    <!-- Left lower bracket structure -->
+    <polygon points="140,760 140,900 200,900 200,840 260,840 260,760"/>
+  </g>
+  
+  <!-- Angular structural brackets (right side) - mirrored for balance -->
+  <g fill="#ffffff" stroke="#ffffff" stroke-width="6" stroke-linejoin="round">
+    <!-- Right upper bracket structure -->
+    <polygon points="940,180 940,320 880,320 880,260 820,260 820,180"/>
+    <!-- Right lower bracket structure -->
+    <polygon points="940,760 940,900 880,900 880,840 820,840 820,760"/>
+  </g>
+  
+  <!-- Central distributed lattice / grid area (the "pool" of connected nodes) -->
+  <!-- Horizontal bracing lines -->
+  <g stroke="#ffffff" stroke-width="4" fill="none">
+    <line x1="280" y1="280" x2="800" y2="280"/>
+    <line x1="280" y1="400" x2="800" y2="400"/>
+    <line x1="280" y1="520" x2="800" y2="520"/>
+    <line x1="280" y1="640" x2="800" y2="640"/>
+    <line x1="280" y1="760" x2="800" y2="760"/>
+  </g>
+  
+  <!-- Vertical bracing lines -->
+  <g stroke="#ffffff" stroke-width="4" fill="none">
+    <line x1="300" y1="260" x2="300" y2="780"/>
+    <line x1="420" y1="260" x2="420" y2="780"/>
+    <line x1="540" y1="260" x2="540" y2="780"/>
+    <line x1="660" y1="260" x2="660" y2="780"/>
+    <line x1="780" y1="260" x2="780" y2="780"/>
+  </g>
+  
+  <!-- Cross-bracing diagonals for resilience (redundant paths) -->
+  <g stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.7">
+    <line x1="300" y1="280" x2="780" y2="760"/>
+    <line x1="780" y1="280" x2="300" y2="760"/>
+    <line x1="420" y1="280" x2="660" y2="640"/>
+    <line x1="660" y1="280" x2="420" y2="640"/>
+  </g>
+  
+  <!-- Connection nodes / pads - white circles (distributed, equal importance) -->
+  <g fill="#ffffff">
+    <!-- Top row -->
+    <circle cx="300" cy="280" r="16"/>
+    <circle cx="420" cy="280" r="16"/>
+    <circle cx="540" cy="280" r="16"/>
+    <circle cx="660" cy="280" r="16"/>
+    <circle cx="780" cy="280" r="16"/>
+    
+    <!-- Middle rows -->
+    <circle cx="300" cy="400" r="16"/>
+    <circle cx="420" cy="400" r="16"/>
+    <circle cx="540" cy="400" r="16"/>
+    <circle cx="660" cy="400" r="16"/>
+    <circle cx="780" cy="400" r="16"/>
+    
+    <circle cx="300" cy="520" r="16"/>
+    <circle cx="420" cy="520" r="16"/>
+    <circle cx="540" cy="520" r="16"/>
+    <circle cx="660" cy="520" r="16"/>
+    <circle cx="780" cy="520" r="16"/>
+    
+    <circle cx="300" cy="640" r="16"/>
+    <circle cx="420" cy="640" r="16"/>
+    <circle cx="540" cy="640" r="16"/>
+    <circle cx="660" cy="640" r="16"/>
+    <circle cx="780" cy="640" r="16"/>
+    
+    <!-- Bottom row -->
+    <circle cx="300" cy="760" r="16"/>
+    <circle cx="420" cy="760" r="16"/>
+    <circle cx="540" cy="760" r="16"/>
+    <circle cx="660" cy="760" r="16"/>
+    <circle cx="780" cy="760" r="16"/>
+  </g>
+  
+  <!-- Subtle technical pads / connection points echoing Grid Labs circle style -->
+  <g fill="#ffffff" opacity="0.9">
+    <!-- Extra accent circles at structural intersections for "hardened" feel -->
+    <circle cx="300" cy="520" r="22"/>
+    <circle cx="780" cy="520" r="22"/>
+    <circle cx="540" cy="400" r="20"/>
+  </g>
+  
+  <!-- Thin outer technical border for cohesion with company logo -->
+  <rect x="60" y="60" width="960" height="960" rx="6" ry="6" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+</svg>

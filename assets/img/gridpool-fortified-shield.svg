@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <!-- Black background matching Grid Labs aesthetic -->
+  <rect width="1080" height="1080" fill="#000000"/>
+  
+  <!-- Modern fortified shield outline - symbolizes battle-hardened protection 
+       against regulation, 51% attacks, censorship, and block withholding -->
+  <path d="M 540 70 
+           Q 820 140 860 320 
+           Q 820 520 540 620 
+           Q 260 520 220 320 
+           Q 260 140 540 70 Z" 
+        fill="none" stroke="#ffffff" stroke-width="18" stroke-linejoin="round"/>
+  
+  <!-- Inner shield reinforcement border -->
+  <path d="M 540 110 
+           Q 780 170 810 310 
+           Q 780 490 540 580 
+           Q 300 490 270 310 
+           Q 300 170 540 110 Z" 
+        fill="none" stroke="#ffffff" stroke-width="7" stroke-linejoin="round"/>
+  
+  <!-- Internal resilient grid mesh inside the shield (protected hashrate network) -->
+  <!-- Horizontal lines -->
+  <g stroke="#ffffff" stroke-width="4" fill="none">
+    <line x1="280" y1="220" x2="800" y2="220"/>
+    <line x1="280" y1="310" x2="800" y2="310"/>
+    <line x1="280" y1="400" x2="800" y2="400"/>
+    <line x1="280" y1="490" x2="800" y2="490"/>
+    <line x1="280" y1="540" x2="800" y2="540"/>
+  </g>
+  
+  <!-- Vertical lines -->
+  <g stroke="#ffffff" stroke-width="4" fill="none">
+    <line x1="320" y1="180" x2="320" y2="560"/>
+    <line x1="410" y1="180" x2="410" y2="560"/>
+    <line x1="500" y1="180" x2="500" y2="560"/>
+    <line x1="590" y1="180" x2="590" y2="560"/>
+    <line x1="680" y1="180" x2="680" y2="560"/>
+    <line x1="760" y1="180" x2="760" y2="560"/>
+  </g>
+  
+  <!-- Extra cross-bracing diagonals inside shield for redundancy -->
+  <g stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.75">
+    <line x1="320" y1="220" x2="760" y2="540"/>
+    <line x1="760" y1="220" x2="320" y2="540"/>
+    <line x1="410" y1="220" x2="680" y2="490"/>
+    <line x1="680" y1="220" x2="410" y2="490"/>
+  </g>
+  
+  <!-- Distributed nodes inside the protected grid (equal, decentralized miners) -->
+  <g fill="#ffffff">
+    <circle cx="320" cy="220" r="14"/>
+    <circle cx="410" cy="220" r="14"/>
+    <circle cx="500" cy="220" r="14"/>
+    <circle cx="590" cy="220" r="14"/>
+    <circle cx="680" cy="220" r="14"/>
+    <circle cx="760" cy="220" r="14"/>
+    
+    <circle cx="320" cy="310" r="14"/>
+    <circle cx="410" cy="310" r="14"/>
+    <circle cx="500" cy="310" r="14"/>
+    <circle cx="590" cy="310" r="14"/>
+    <circle cx="680" cy="310" r="14"/>
+    <circle cx="760" cy="310" r="14"/>
+    
+    <circle cx="320" cy="400" r="14"/>
+    <circle cx="410" cy="400" r="14"/>
+    <circle cx="500" cy="400" r="14"/>
+    <circle cx="590" cy="400" r="14"/>
+    <circle cx="680" cy="400" r="14"/>
+    <circle cx="760" cy="400" r="14"/>
+    
+    <circle cx="320" cy="490" r="14"/>
+    <circle cx="410" cy="490" r="14"/>
+    <circle cx="500" cy="490" r="14"/>
+    <circle cx="590" cy="490" r="14"/>
+    <circle cx="680" cy="490" r="14"/>
+    <circle cx="760" cy="490" r="14"/>
+    
+    <circle cx="320" cy="540" r="14"/>
+    <circle cx="410" cy="540" r="14"/>
+    <circle cx="500" cy="540" r="14"/>
+    <circle cx="590" cy="540" r="14"/>
+    <circle cx="680" cy="540" r="14"/>
+    <circle cx="760" cy="540" r="14"/>
+  </g>
+  
+  <!-- Subtle reinforcement rings on key central nodes -->
+  <g fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5">
+    <circle cx="500" cy="400" r="28"/>
+    <circle cx="590" cy="400" r="28"/>
+  </g>
+</svg>

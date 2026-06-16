@@ -122,8 +122,10 @@ code {
 .footer-brand img {
   width: 42px;
   height: 42px;
+  object-fit: contain;
+  padding: 3px;
   border-radius: 8px;
-  background: var(--black);
+  background: rgba(4, 5, 6, 0.78);
 }
 
 .site-nav,
@@ -171,14 +173,18 @@ code {
 
 .hero-backdrop {
   position: absolute;
-  inset: 46px -12vw 24px;
+  inset: 0 -12vw 24px;
   z-index: -1;
   border-bottom: 1px solid rgba(216, 222, 208, 0.1);
   background:
-    linear-gradient(120deg, rgba(18, 23, 25, 0.92), rgba(18, 23, 25, 0.36)),
+    linear-gradient(90deg, rgba(8, 10, 13, 0.98) 0%, rgba(8, 10, 13, 0.9) 36%, rgba(8, 10, 13, 0.48) 72%, rgba(8, 10, 13, 0.78) 100%),
+    linear-gradient(180deg, rgba(8, 10, 13, 0.06) 0%, rgba(8, 10, 13, 0.18) 48%, rgba(8, 10, 13, 0.9) 100%),
+    radial-gradient(circle at 72% 52%, rgba(140, 53, 255, 0.2), transparent 24rem),
+    radial-gradient(circle at 88% 28%, rgba(88, 240, 124, 0.1), transparent 18rem),
     repeating-linear-gradient(90deg, rgba(88, 240, 124, 0.08) 0 1px, transparent 1px 74px),
-    repeating-linear-gradient(0deg, rgba(255, 178, 63, 0.055) 0 1px, transparent 1px 74px);
-  mask-image: linear-gradient(90deg, black 0%, black 78%, transparent 100%);
+    url("../img/nasa-bg.jpg");
+  background-position: center, center, center, center, center, 56% center;
+  background-size: auto, auto, auto, auto, 74px 74px, cover;
 }
 
 .hero-content {
@@ -269,8 +275,13 @@ code {
   box-shadow: 0 10px 46px rgba(0, 0, 0, 0.24);
 }
 
-.hero-panel {
+.hero-side {
   align-self: end;
+  display: grid;
+  gap: 18px;
+}
+
+.hero-panel {
   display: grid;
   gap: 12px;
   padding: 24px;
@@ -615,6 +626,10 @@ code {
     align-self: auto;
   }
 
+  .hero-side {
+    max-width: 620px;
+  }
+
   .steps-grid,
   .instruction-grid,
   .resource-grid {
@@ -675,7 +690,12 @@ code {
 
   .hero-backdrop {
     inset: 18px -18px 0;
-    mask-image: none;
+    background:
+      linear-gradient(180deg, rgba(8, 10, 13, 0.92) 0%, rgba(8, 10, 13, 0.72) 54%, rgba(8, 10, 13, 0.94) 100%),
+      radial-gradient(circle at 66% 28%, rgba(140, 53, 255, 0.18), transparent 18rem),
+      url("../img/nasa-bg.jpg");
+    background-position: center, center, 56% center;
+    background-size: auto, auto, cover;
   }
 
   .hero-copy {

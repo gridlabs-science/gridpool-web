@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <!-- Black background matching Grid Labs aesthetic -->
+  <rect width="1080" height="1080" fill="#000000"/>
+  
+  <!-- Outer reinforced technical frame - strength and precision -->
+  <rect x="80" y="80" width="920" height="920" rx="8" ry="8" fill="none" stroke="#ffffff" stroke-width="14"/>
+  <rect x="110" y="110" width="860" height="860" rx="4" ry="4" fill="none" stroke="#ffffff" stroke-width="6"/>
+  
+  <!-- Resilient mesh grid: multiple redundant paths (horizontal, vertical, diagonal) 
+       Symbolizes resistance to single-point failures, censorship, and attacks -->
+  
+  <!-- Main horizontal grid lines -->
+  <g stroke="#ffffff" stroke-width="5" fill="none">
+    <line x1="160" y1="200" x2="920" y2="200"/>
+    <line x1="160" y1="340" x2="920" y2="340"/>
+    <line x1="160" y1="480" x2="920" y2="480"/>
+    <line x1="160" y1="620" x2="920" y2="620"/>
+    <line x1="160" y1="760" x2="920" y2="760"/>
+    <line x1="160" y1="900" x2="920" y2="900"/>
+  </g>
+  
+  <!-- Main vertical grid lines -->
+  <g stroke="#ffffff" stroke-width="5" fill="none">
+    <line x1="200" y1="160" x2="200" y2="920"/>
+    <line x1="340" y1="160" x2="340" y2="920"/>
+    <line x1="480" y1="160" x2="480" y2="920"/>
+    <line x1="620" y1="160" x2="620" y2="920"/>
+    <line x1="760" y1="160" x2="760" y2="920"/>
+    <line x1="900" y1="160" x2="900" y2="920"/>
+  </g>
+  
+  <!-- Diagonal cross-connections for extra resilience (multiple attack-resistant paths) -->
+  <g stroke="#ffffff" stroke-width="3" fill="none" opacity="0.85">
+    <!-- Primary diagonals -->
+    <line x1="200" y1="200" x2="880" y2="880"/>
+    <line x1="880" y1="200" x2="200" y2="880"/>
+    <!-- Secondary reinforcing diagonals -->
+    <line x1="340" y1="200" x2="880" y2="740"/>
+    <line x1="200" y1="340" x2="740" y2="880"/>
+    <line x1="620" y1="200" x2="880" y2="460"/>
+    <line x1="200" y1="620" x2="460" y2="880"/>
+  </g>
+  
+  <!-- Nodes: equal-sized white circles representing distributed miners/nodes in the pool
+       No single dominant element = truly decentralized -->
+  <g fill="#ffffff">
+    <!-- Row y=200 -->
+    <circle cx="200" cy="200" r="18"/>
+    <circle cx="340" cy="200" r="18"/>
+    <circle cx="480" cy="200" r="18"/>
+    <circle cx="620" cy="200" r="18"/>
+    <circle cx="760" cy="200" r="18"/>
+    <circle cx="900" cy="200" r="18"/>
+    
+    <!-- Row y=340 -->
+    <circle cx="200" cy="340" r="18"/>
+    <circle cx="340" cy="340" r="18"/>
+    <circle cx="480" cy="340" r="18"/>
+    <circle cx="620" cy="340" r="18"/>
+    <circle cx="760" cy="340" r="18"/>
+    <circle cx="900" cy="340" r="18"/>
+    
+    <!-- Row y=480 (center - slightly emphasized connections around it) -->
+    <circle cx="200" cy="480" r="18"/>
+    <circle cx="340" cy="480" r="18"/>
+    <circle cx="480" cy="480" r="20"/>
+    <circle cx="620" cy="480" r="18"/>
+    <circle cx="760" cy="480" r="18"/>
+    <circle cx="900" cy="480" r="18"/>
+    
+    <!-- Row y=620 -->
+    <circle cx="200" cy="620" r="18"/>
+    <circle cx="340" cy="620" r="18"/>
+    <circle cx="480" cy="620" r="18"/>
+    <circle cx="620" cy="620" r="18"/>
+    <circle cx="760" cy="620" r="18"/>
+    <circle cx="900" cy="620" r="18"/>
+    
+    <!-- Row y=760 -->
+    <circle cx="200" cy="760" r="18"/>
+    <circle cx="340" cy="760" r="18"/>
+    <circle cx="480" cy="760" r="18"/>
+    <circle cx="620" cy="760" r="18"/>
+    <circle cx="760" cy="760" r="18"/>
+    <circle cx="900" cy="760" r="18"/>
+    
+    <!-- Row y=900 -->
+    <circle cx="200" cy="900" r="18"/>
+    <circle cx="340" cy="900" r="18"/>
+    <circle cx="480" cy="900" r="18"/>
+    <circle cx="620" cy="900" r="18"/>
+    <circle cx="760" cy="900" r="18"/>
+    <circle cx="900" cy="900" r="18"/>
+  </g>
+  
+  <!-- Subtle inner reinforcement circles around key nodes to emphasize hardened connections -->
+  <g fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6">
+    <circle cx="480" cy="480" r="38"/>
+    <circle cx="340" cy="340" r="32"/>
+    <circle cx="620" cy="620" r="32"/>
+  </g>
+</svg>
