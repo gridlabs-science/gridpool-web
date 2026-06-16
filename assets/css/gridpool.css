@@ -488,6 +488,87 @@ code {
   color: var(--green);
 }
 
+.endpoint-list {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.copy-row {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(216, 222, 208, 0.12);
+  border-radius: 7px;
+  background: rgba(4, 5, 6, 0.42);
+}
+
+.copy-row span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.copy-row code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  border-color: rgba(216, 222, 208, 0.1);
+  background: rgba(8, 10, 13, 0.68);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.copy-row-key {
+  align-items: start;
+}
+
+.copy-button {
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid rgba(88, 240, 124, 0.35);
+  border-radius: 6px;
+  background: rgba(88, 240, 124, 0.08);
+  color: var(--green);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.copy-button:hover,
+.copy-button:focus-visible {
+  border-color: rgba(255, 178, 63, 0.55);
+  color: var(--amber);
+  outline: none;
+}
+
+.copy-button[data-copy-state="copied"] {
+  border-color: rgba(88, 240, 124, 0.65);
+  background: rgba(88, 240, 124, 0.18);
+  color: var(--text);
+}
+
+.trust-path-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.notice-box-strong {
+  margin-top: 0;
+}
+
+.install-command {
+  margin-top: 18px;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+}
+
 .instruction-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -650,7 +731,8 @@ code {
 
   .signal-strip,
   .comparison-grid,
-  .connect-layout {
+  .connect-layout,
+  .trust-path-grid {
     grid-template-columns: 1fr;
   }
 
@@ -706,6 +788,15 @@ code {
     width: 100%;
     white-space: normal;
     text-align: center;
+  }
+
+  .copy-row,
+  .install-command {
+    grid-template-columns: 1fr;
+  }
+
+  .copy-button {
+    width: 100%;
   }
 
   .signal-strip {

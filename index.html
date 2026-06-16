@@ -207,11 +207,28 @@
               <span class="status status-live">Mainnet beta</span>
               <span>Main chain</span>
             </div>
-            <h3>Mine real Bitcoin</h3>
+            <h3>Quick start: mine real Bitcoin</h3>
             <p>
               Use this when you understand the beta status and want to point a
-              DATUM gateway at the public mainnet network.
+              DATUM gateway at the public mainnet GridPool node.
             </p>
+            <div class="endpoint-list" aria-label="Mainnet DATUM endpoint">
+              <div class="copy-row">
+                <span>Pool Host</span>
+                <code>datum.main.gridpool.net</code>
+                <button type="button" class="copy-button" data-copy="datum.main.gridpool.net">Copy</button>
+              </div>
+              <div class="copy-row">
+                <span>Pool Port</span>
+                <code>3008</code>
+                <button type="button" class="copy-button" data-copy="3008">Copy</button>
+              </div>
+              <div class="copy-row copy-row-key">
+                <span>Pool pubkey</span>
+                <code>46d0fa9529eff366471d232e3997341ad91185ec225302296967440cb96c2b1942e513d5dcfcdce90d89b8376159d5c19fcad913e4028a051b8a4d776c152d0c</code>
+                <button type="button" class="copy-button" data-copy="46d0fa9529eff366471d232e3997341ad91185ec225302296967440cb96c2b1942e513d5dcfcdce90d89b8376159d5c19fcad913e4028a051b8a4d776c152d0c">Copy</button>
+              </div>
+            </div>
             <a class="button button-primary" href="https://main.gridpool.net" rel="noreferrer">Open mainnet node UI</a>
           </article>
 
@@ -220,28 +237,76 @@
               <span class="status">Testnet4</span>
               <span>Protocol testing</span>
             </div>
-            <h3>Test round rotation</h3>
+            <h3>Quick start: test round rotation</h3>
             <p>
               Use this for experiments, integrations, and real-trigger behavior
               without risking mainnet funds.
             </p>
+            <div class="endpoint-list" aria-label="Testnet4 DATUM endpoint">
+              <div class="copy-row">
+                <span>Pool Host</span>
+                <code>datum.test.gridpool.net</code>
+                <button type="button" class="copy-button" data-copy="datum.test.gridpool.net">Copy</button>
+              </div>
+              <div class="copy-row">
+                <span>Pool Port</span>
+                <code>3009</code>
+                <button type="button" class="copy-button" data-copy="3009">Copy</button>
+              </div>
+              <div class="copy-row copy-row-key">
+                <span>Pool pubkey</span>
+                <code>005b8dde7340e0c9a429cb5aded936eccf23a832ec2805e16fd4e53f6617617e98d735f7f8ebf28f7ef3227bd437d1e85822881ee6ba492bc3dcd6689c79b13c</code>
+                <button type="button" class="copy-button" data-copy="005b8dde7340e0c9a429cb5aded936eccf23a832ec2805e16fd4e53f6617617e98d735f7f8ebf28f7ef3227bd437d1e85822881ee6ba492bc3dcd6689c79b13c">Copy</button>
+              </div>
+            </div>
             <a class="button" href="https://test.gridpool.net" rel="noreferrer">Open testnet node UI</a>
+          </article>
+        </div>
+
+        <div class="trust-path-grid">
+          <article class="notice-box notice-box-strong">
+            <strong>Fastest path: use the public beta node</strong>
+            <p>
+              This is the easiest way to try GridPool today: configure DATUM with
+              one of the endpoints above, then point your ASICs at DATUM. Your
+              miner still builds sovereign block templates through DATUM; raw
+              Stratum V1 directly to GridPool is not supported.
+            </p>
+          </article>
+          <article class="notice-box notice-box-strong">
+            <strong>Preferred path: run your own GridPool node</strong>
+            <p>
+              The trustless model is to run your own GridPool node, then connect
+              your DATUM gateway to it. If you already have Bitcoin and DATUM
+              running, install only the GridPool node. Use the full-stack path for
+              fresh Raspberry Pi or Ubuntu installs.
+            </p>
+            <div class="copy-row install-command">
+              <span>Node only</span>
+              <code>curl -fsSL https://raw.githubusercontent.com/gridlabs-science/boot-protocol/main/scripts/install-gridpool-node.sh | sudo bash -s -- --payout-address YOUR_BTC_ADDRESS</code>
+              <button type="button" class="copy-button" data-copy="curl -fsSL https://raw.githubusercontent.com/gridlabs-science/boot-protocol/main/scripts/install-gridpool-node.sh | sudo bash -s -- --payout-address YOUR_BTC_ADDRESS">Copy</button>
+            </div>
+            <div class="copy-row install-command">
+              <span>Full stack</span>
+              <code>curl -fsSL https://raw.githubusercontent.com/gridlabs-science/boot-protocol/main/scripts/install-sovereign-stack.sh | sudo bash -s -- --payout-address YOUR_BTC_ADDRESS</code>
+              <button type="button" class="copy-button" data-copy="curl -fsSL https://raw.githubusercontent.com/gridlabs-science/boot-protocol/main/scripts/install-sovereign-stack.sh | sudo bash -s -- --payout-address YOUR_BTC_ADDRESS">Copy</button>
+            </div>
           </article>
         </div>
 
         <div class="instruction-grid" aria-label="Connection instructions">
           <div>
-            <strong>1. Run DATUM</strong>
+            <strong>1. Run GridPool</strong>
             <p>
-              Configure DATUM with your payout address and a Bitcoin node capable
-              of building templates.
+              Quick start with a public node, or run your own GridPool node and
+              open its local WebUI.
             </p>
           </div>
           <div>
-            <strong>2. Open a node UI</strong>
+            <strong>2. Copy node details</strong>
             <p>
-              Use the Connect DATUM panel on <code>main.gridpool.net</code> or
-              <code>test.gridpool.net</code> for the current Boot endpoint details.
+              From the local WebUI, copy Pool Host, Pool Port, and Pool Pubkey.
+              Public beta details are listed above for convenience.
             </p>
           </div>
           <div>
@@ -321,6 +386,7 @@
       </div>
     </footer>
 
+    <script src="assets/js/site.js" defer></script>
     <script src="assets/js/markdown.js" defer></script>
   </body>
 </html>
