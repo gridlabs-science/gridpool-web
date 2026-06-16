@@ -45,4 +45,4 @@ The node UIs should stay on:
 - `main.gridpool.net`
 - `test.gridpool.net`
 
-This root site is informational only. It is not the DATUM endpoint and it is not a Boot node UI.
+This root site is informational only. It is not the DATUM endpoint and it is not a GridPool node UI.

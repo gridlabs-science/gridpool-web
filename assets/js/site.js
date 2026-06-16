@@ -40,3 +40,30 @@ document.addEventListener("click", async (event) => {
     setCopyButtonState(button, "Copy failed");
   }
 });
+
+const threatRotator = document.querySelector("[data-threat-rotator]");
+const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+if (threatRotator && !reduceMotion) {
+  const threats = [
+    "block withholding attacks.",
+    "pool censorship pressure.",
+    "custodial seizure.",
+    "sharechain reorgs.",
+    "Sybil accounting games.",
+    "payout hijacking.",
+    "regulatory choke points.",
+    "opaque operator risk.",
+  ];
+  let threatIndex = 0;
+
+  window.setInterval(() => {
+    threatIndex = (threatIndex + 1) % threats.length;
+    threatRotator.textContent = threats[threatIndex];
+    threatRotator.dataset.threatState = "swap";
+
+    window.setTimeout(() => {
+      threatRotator.dataset.threatState = "";
+    }, 380);
+  }, 2400);
+}

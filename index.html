@@ -29,6 +29,7 @@
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#how">How it works</a>
+        <a href="#resilience">Threat model</a>
         <a href="#connect">Connect</a>
         <a href="#resources">Resources</a>
         <a href="https://github.com/gridlabs-science/boot-protocol" rel="noreferrer">Source</a>
@@ -80,6 +81,98 @@
           <strong>DATUM today</strong>
           <span>Hydrapool and direct HTTP integrations are next.</span>
         </div>
+      </section>
+
+      <section class="section resilience-section" id="resilience" aria-labelledby="resilience-title">
+        <div class="resilience-shell">
+          <div class="resilience-heading">
+            <p class="eyebrow">Threat model</p>
+            <h2 id="resilience-title">
+              <span class="threat-kicker">Engineered to withstand</span>
+              <span class="threat-rotator" data-threat-rotator aria-live="polite">block withholding attacks.</span>
+            </h2>
+            <p>
+              GridPool's defense is simple: remove the things attackers usually
+              grab. No pool wallet to seize. No central template authority to
+              pressure. No sharechain ledger to rewrite. No user identity votes
+              to Sybil.
+            </p>
+          </div>
+
+          <div class="resilience-visual" aria-hidden="true">
+            <div class="mesh-node mesh-node-a"></div>
+            <div class="mesh-node mesh-node-b"></div>
+            <div class="mesh-node mesh-node-c"></div>
+            <div class="mesh-node mesh-node-d"></div>
+            <div class="mesh-node mesh-node-e"></div>
+            <div class="mesh-line mesh-line-1"></div>
+            <div class="mesh-line mesh-line-2"></div>
+            <div class="mesh-line mesh-line-3"></div>
+            <div class="mesh-line mesh-line-4"></div>
+            <div class="mesh-core">GP</div>
+          </div>
+        </div>
+
+        <div class="resilience-grid">
+          <article class="resilience-card">
+            <span>01</span>
+            <h3>Custody attacks</h3>
+            <p>
+              There is no pool hot wallet and no withdrawal queue. Valid blocks
+              pay miners directly from the coinbase transaction.
+            </p>
+          </article>
+          <article class="resilience-card">
+            <span>02</span>
+            <h3>Censorship pressure</h3>
+            <p>
+              Internode share messages prove work and payout commitment without
+              revealing the miner's full transaction set.
+            </p>
+          </article>
+          <article class="resilience-card">
+            <span>03</span>
+            <h3>Sharechain attacks</h3>
+            <p>
+              GridPool has no secondary blockchain to reorg, privately mine, or
+              51 percent attack as a separate consensus object.
+            </p>
+          </article>
+          <article class="resilience-card">
+            <span>04</span>
+            <h3>Sybil accounting</h3>
+            <p>
+              Payout slots are earned by verified proof-of-work difficulty, not
+              accounts, IP addresses, or node identities.
+            </p>
+          </article>
+          <article class="resilience-card">
+            <span>05</span>
+            <h3>Payout hijacking</h3>
+            <p>
+              Share attribution comes from the slot-0 coinbase payout address
+              committed into the Merkle root and block header.
+            </p>
+          </article>
+          <article class="resilience-card">
+            <span>06</span>
+            <h3>Opaque operators</h3>
+            <p>
+              The reference node exposes the payout lists and peer state so miners
+              can verify what team they are actually mining with.
+            </p>
+          </article>
+        </div>
+
+        <aside class="resilience-caveat">
+          <strong>Not magic, still Bitcoin.</strong>
+          <p>
+            GridPool does not eliminate Bitcoin-level 51 percent attacks, network
+            eclipse attacks, DDoS, bad firmware, or miners who choose censored
+            templates locally. It reduces the pool-layer choke points that make
+            those failures easier to coordinate.
+          </p>
+        </aside>
       </section>
 
       <section class="section section-split" id="watch" aria-labelledby="watch-title">
@@ -313,7 +406,7 @@
             <strong>3. Point ASICs at DATUM</strong>
             <p>
               Your miner talks Stratum to DATUM. Do not point raw Stratum V1
-              directly at this website or at the Boot WebUI.
+              directly at this website or at the GridPool WebUI.
             </p>
           </div>
           <div>
