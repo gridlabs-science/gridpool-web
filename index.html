@@ -286,11 +286,13 @@
       <section class="section connect-section" id="connect" aria-labelledby="connect-title">
         <div class="section-heading">
           <p class="eyebrow">Public beta connection guide</p>
-          <h2 id="connect-title">Connect through DATUM, not raw Stratum V1.</h2>
+          <h2 id="connect-title">Connect sovereign, or use the hosted bridge.</h2>
           <p>
             GridPool is built for sovereign miners who construct their own
-            block templates. ASICs should connect to your DATUM gateway. DATUM
-            then talks to a GridPool node. Ideally yours.
+            block templates. The preferred path is still DATUM or another
+            template-building server connected to your own GridPool node. For
+            miners who only have standard Stratum V1 today, a Hydrapool-hosted
+            bridge is being prepared as the easier beta on-ramp.
           </p>
         </div>
 
@@ -358,13 +360,27 @@
 
         <div class="trust-path-grid">
           <article class="notice-box notice-box-strong">
-            <strong>Fastest path: use the public beta node</strong>
+            <strong>Live quick start: use DATUM with the public beta node</strong>
             <p>
               This is the easiest way to try GridPool today: configure DATUM with
               one of the endpoints above, then point your ASICs at DATUM. Your
-              miner still builds sovereign block templates through DATUM; raw
-              Stratum V1 directly to GridPool is not supported.
+              miner still builds sovereign block templates through DATUM.
             </p>
+          </article>
+          <article class="notice-box notice-box-strong">
+            <strong>Next beta path: hosted Stratum V1 through Hydrapool</strong>
+            <p>
+              For miners who do not run DATUM yet, the planned bridge is a
+              standard Stratum V1 endpoint backed by Hydrapool. This path is
+              less sovereign because the bridge constructs work for you, and it
+              is expected to carry a 2% operator fee by assigning every 50th
+              job to the GridPool operator slot-0 address.
+            </p>
+            <div class="copy-row install-command">
+              <span>Target endpoint</span>
+              <code>stratum+tcp://stratum.main.gridpool.net:3333</code>
+              <button type="button" class="copy-button" data-copy="stratum+tcp://stratum.main.gridpool.net:3333">Copy</button>
+            </div>
           </article>
           <article class="notice-box notice-box-strong">
             <strong>Preferred path: run your own GridPool node</strong>
@@ -405,8 +421,9 @@
           <div>
             <strong>3. Point ASICs at DATUM</strong>
             <p>
-              Your miner talks Stratum to DATUM. Do not point raw Stratum V1
-              directly at this website or at the GridPool WebUI.
+              Your miner talks Stratum to DATUM. If you are using the hosted
+              Hydrapool bridge once it is live, point the ASIC directly at the
+              hosted Stratum endpoint instead.
             </p>
           </div>
           <div>
@@ -421,9 +438,10 @@
         <aside class="notice-box">
           <strong>Integrator note</strong>
           <p>
-            Hydrapool support is planned. Other sovereign Stratum servers such as
-            CK Pool, Public Pool, Stratum V2 implementations, and FutureBit-style
-            stacks can integrate through the HTTP share-submission API.
+            Hydrapool support is the next bridge target. Other sovereign Stratum
+            servers such as CK Pool, Public Pool, Stratum V2 implementations,
+            and FutureBit-style stacks can integrate through the HTTP
+            share-submission API.
           </p>
         </aside>
       </section>
