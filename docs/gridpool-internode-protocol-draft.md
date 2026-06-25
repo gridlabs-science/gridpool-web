@@ -81,7 +81,8 @@ unpaid Work Set.
 Slot 0:
 
 The first coinbase transaction output. Slot 0 belongs to the miner that actually
-finds the Bitcoin block or share. Slot 0 is not part of the shared Winners List.
+finds the Bitcoin block or share. Slot 0 is not part of the shared payout
+snapshot.
 
 Winners List:
 
@@ -130,15 +131,15 @@ The current unpaid Work Set and its strongest potential payout snapshot.
 
 State Bundle:
 
-A serialized snapshot of a current or candidate state, including the state ID,
-network identifiers, payout list, share proofs when available, and parent block
-context.
+A serialized snapshot of a current or candidate Work Set state, including the
+state ID, network identifiers, payout list, share proofs when available, and
+parent block context.
 
 GridPool Block:
 
-A Bitcoin block whose coinbase transaction pays slot 0 plus the current
-GridPool Winners List, and whose header hash satisfies the Bitcoin network
-target. A GridPool block is the production payment event.
+A Bitcoin block whose coinbase transaction pays slot 0 plus the active GridPool
+payout snapshot, and whose header hash satisfies the Bitcoin network target. A
+GridPool block is the production payment event.
 
 ## 4. Network Parameters
 
@@ -284,8 +285,9 @@ An implementation MUST reject a share if:
 - the computed difficulty is below the implementation's minimum useful floor;
 - the share is a duplicate of a previously seen share ID.
 
-Duplicate shares MUST NOT create additional On Deck slots. A duplicate MAY be
-reported as `duplicate` rather than `rejected`, but it has no consensus effect.
+Duplicate shares MUST NOT create additional Work Set entries or payout slots. A
+duplicate MAY be reported as `duplicate` rather than `rejected`, but it has no
+consensus effect.
 
 ## 8. Transaction Privacy
 
@@ -344,7 +346,7 @@ address. Multiple slots may belong to the same address if that address produced
 multiple ranked shares.
 
 A node MAY accept or record valid lower-difficulty shares for diagnostics or
-local hashrate estimation, but such shares do not affect candidate state and
+local hashrate estimation, but such shares do not affect the unpaid Work Set and
 SHOULD NOT be relayed to peers unless they can enter the unpaid Work Set.
 
 ## 10. Candidate Work Set State ID
@@ -492,7 +494,7 @@ For a candidate bundle:
 - `shareProofs` contains the ranked proofs backing `winnersList`.
 - `workSetProofs` may contain the broader unpaid reserve.
 
-For a locked current-state bundle:
+For an active-snapshot state bundle:
 
 - `winnersList` is the active payout snapshot.
 - `shareProofs` SHOULD contain the paid or active snapshot proofs when available.
@@ -504,7 +506,7 @@ For a locked current-state bundle:
 
 ## 15. Importing Candidate Work Set State
 
-When a node receives a candidate state bundle from a peer, it MUST:
+When a node receives a candidate Work Set state bundle from a peer, it MUST:
 
 1. Verify `protocolVersion` and `networkId`.
 2. Reject if the winner/proof count exceeds the shared winner slot count.
@@ -512,19 +514,19 @@ When a node receives a candidate state bundle from a peer, it MUST:
    snapshot, or retained snapshot contexts supplied by the bundle.
 4. Rebuild the payout list from the validated proofs.
 5. Verify that the rebuilt payout list equals `winnersList`.
-6. Recompute the candidate state ID.
+6. Recompute the candidate Work Set state ID.
 7. Reject if the recomputed state ID differs from `stateId`.
 
 If the bundle is valid and refers to the same active snapshot, a node SHOULD
 merge/adopt it when its Work Set contains stronger unpaid proofs than the local
-candidate state.
+candidate Work Set state.
 
-This rule gives convergence pressure toward the candidate list with the most
-observed work.
+This rule gives convergence pressure toward the candidate Work Set with the most
+observed unpaid work.
 
 ## 16. Importing Active Snapshot State
 
-When a node receives a locked current-state bundle from a peer, it MUST:
+When a node receives an active-snapshot state bundle from a peer, it MUST:
 
 1. Verify `protocolVersion` and `networkId`.
 2. Reject impossible winner/proof counts.
@@ -535,7 +537,7 @@ When a node receives a locked current-state bundle from a peer, it MUST:
 7. Verify that adopting the state does not obviously move the node backward
    relative to its known chain tip and round number.
 
-A node SHOULD adopt a valid peer locked state if:
+A node SHOULD adopt a valid peer active snapshot state if:
 
 - the local state is empty or genesis-only;
 - the peer round number is greater than the local round number;
@@ -685,8 +687,9 @@ requirement.
 
 Duplicate suppression:
 
-Nodes MUST remember seen share IDs for the active candidate state and recent
-locked states. A duplicate share cannot take multiple slots.
+Nodes MUST remember seen share IDs for the active Work Set, active payout
+snapshot, and recent paid snapshots. A duplicate share cannot take multiple
+slots.
 
 Sybil resistance:
 
@@ -718,7 +721,7 @@ Censorship detection:
 
 The base protocol does not require peers to reveal full transaction templates.
 Nodes can detect peer behavior such as rejecting valid shares, failing to relay
-accepted shares, or omitting known valid shares from advertised candidate state,
+accepted shares, or omitting known valid shares from advertised Work Set state,
 but they cannot usually infer arbitrary transaction-policy censorship from a
 normal share proof alone.
 
@@ -746,11 +749,11 @@ should implement, in order:
 2. HTTP `GET /api/network/state/{stateId}`.
 3. HTTP `POST /api/peer/share`.
 4. Share validation exactly as described above.
-5. Candidate state ID and locked state ID compatibility.
+5. Candidate Work Set state ID and active snapshot state ID compatibility.
 6. Address gossip via `GET /api/network/peer-addresses`.
 7. Optional encrypted sessions.
 8. Optional UDP fast relay.
 
 The safest minimum viable independent implementation is an HTTP-only node that
-validates shares, gossips state bundles, and converges on stronger candidate
+validates shares, gossips state bundles, and converges on stronger Work Set
 states. Faster transports can be added without changing consensus.

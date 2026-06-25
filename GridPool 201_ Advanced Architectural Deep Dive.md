@@ -30,7 +30,7 @@ GridPool represents a fundamental shift in mining architecture, moving away from
 The architectural resilience of GridPool is defined by its departure from the sharechain model. The sharechain is a separate blockchain whose security is bounded by the hashrate participating in that specific pool. This creates a "pool-chain majority" attack surface where a powerful miner can reorganize the sharechain or rewrite history independently of the Bitcoin mainnet. GridPool eliminates this attack vector by removing the internal ledger. There is no historical "longest-chain" of shares to manipulate or privately mine.
 **Distinction of Adversarial Models:**
 
-* **GridPool Dominance:**  An attacker with a majority of GridPool-specific hashrate can dominate future Winners Lists through proportional mining power—this is simply the intended function of proof-of-work (PoW) attribution.  They cannot reorganize the payout distribution or censor other miners.
+* **GridPool Dominance:**  An attacker with a majority of GridPool-specific hashrate can dominate future payout snapshots through proportional mining power—this is simply the intended function of proof-of-work (PoW) attribution.  They cannot reorganize the payout distribution or censor other miners.
 * **Bitcoin-Level Security:**  GridPool is not a separate chain; it is a collaborative coordination layer. An attacker cannot "reorg" GridPool history because there is no chain to reorg. GridPool remains Sybil-resistant because "identities do not vote"—shares are ranked strictly by verified cumulative difficulty.
 
 #### 3\. Censorship Resistance via Transaction Blinding
@@ -53,7 +53,7 @@ GridPool utilizes an incentive structure to solve the block withholding problem 
 
 * **Immediate Realization:**  Unlike PPLNS or sharechain rewards, the Slot-0 reward is never promised or tallied long-term; it is realized only upon block submission. This provides an immediate, tangible incentive to broadcast.
 * **Fixed slot accounting:**  The current beta uses 300 conceptual payout slots.  Slot payouts are fixed at subsidy / 300.  Slot 0 receives one slot's worth through the remaining coinbase value, plus the subsidy remainder and all transaction fees.  With the default support fee enabled, one post-slot-0 output is the canonical Grid Labs support slot and up to 298 shared proof slots are paid.  If the support fee is disabled, up to 299 shared proof slots are paid.
-* **Adversary Detection:**  Nodes can detect non-contributing "attackers" by identifying nodes that consistently appear in the high-difficulty Winners List but never submit a Slot-0 block over statistically significant periods.
+* **Adversary Detection:**  Nodes can detect non-contributing "attackers" by identifying nodes that consistently appear in high-difficulty payout snapshots but never submit a Slot-0 block over statistically significant periods.
 
 #### 6\. Client Ecosystem and Layered Integration (DATUM & Firmware)
 
