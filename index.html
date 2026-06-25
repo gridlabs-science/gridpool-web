@@ -203,8 +203,9 @@
           <h2 id="how-title">How GridPool works</h2>
           <p>
             GridPool does not try to reproduce traditional pool accounting.
-            Instead, it lets miners compete for 1 of 299 equal slots in the next coinbase payout
-            list by submitting high-difficulty shares that any peer can verify.
+            Instead, it lets miners submit high-difficulty proofs into a bounded unpaid Work Set.
+            Every Bitcoin block turns the current top unpaid proofs into the active coinbase payout
+            snapshot, and any peer can verify the proofs.
           </p>
         </div>
 
@@ -216,7 +217,7 @@
               Your mining stack constructs a Bitcoin block template locally, ideally using your own trustless copy of the pool's current payout list, 
               and inserts your own payout address in slot 0. The
               block pays slot 0 to the block finder and shares the rest across the
-              current Winners List.
+              active GridPool payout snapshot.
             </p>
           </article>
           <article class="step-card">
@@ -224,7 +225,7 @@
             <h3>Submit high-difficulty proofs</h3>
             <p>
               When your miner finds a share strong enough to compete for the
-              on-deck list, your node relays the header, coinbase, and minimal Merkle
+              unpaid Work Set, your node relays the header, coinbase, and minimal Merkle
               proof needed for trustless verification.  Your full transaction set is kept private.
             </p>
           </article>
@@ -239,12 +240,11 @@
           </article>
           <article class="step-card">
             <span>04</span>
-            <h3>Payout and round reset</h3>
+            <h3>Snapshots and payouts</h3>
             <p>
-              When a GridPool miner finds a real Bitcoin block, payouts happen
-              directly from that block's coinbase transaction. The On Deck List 
-              is locked and becomes the new Winners List. A new round starts with an empty On Deck List 
-              and a new block template.
+              Ordinary Bitcoin blocks create fresh payout snapshots without clearing unpaid work.
+              When a GridPool miner finds a real block, that block pays the active snapshot directly,
+              and only the paid proof IDs are removed from the reserve.
             </p>
           </article>
         </div>
@@ -332,7 +332,7 @@
               <span class="status">Testnet4</span>
               <span>Protocol testing</span>
             </div>
-            <h3>Quick start: test round rotation</h3>
+            <h3>Quick start: testnet snapshots</h3>
             <p>
               Use this for experiments, integrations, and real-trigger behavior
               without risking mainnet funds.
@@ -373,8 +373,8 @@
               For miners who do not run DATUM yet, the planned bridge is a
               standard Stratum V1 endpoint backed by Hydrapool. This path is
               less sovereign because the bridge constructs work for you, and it
-              is expected to carry a 2% operator fee by assigning every 50th
-              job to the GridPool operator slot-0 address.
+              follows the same beta support model: a canonical optional Grid Labs
+              support slot worth 1/300th of the block subsidy when enabled.
             </p>
             <div class="copy-row install-command">
               <span>Target endpoint</span>

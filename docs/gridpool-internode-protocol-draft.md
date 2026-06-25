@@ -2,9 +2,9 @@
 
 Status: Draft
 
-Version: 0.1
+Version: 0.2
 
-Last updated: June 16, 2026
+Last updated: June 24, 2026
 
 This document specifies the GridPool internode protocol at a draft level. It
 describes the state machine, consensus rules, share proof validation, and peer
@@ -22,8 +22,8 @@ This specification covers:
 
 - GridPool peer-to-peer state synchronization.
 - Share proof relay between GridPool nodes.
-- Consensus rules for ranking shares into the On Deck List.
-- Consensus rules for rotating the On Deck List into the Winners List.
+- Consensus rules for ranking shares into the unpaid Work Set reserve.
+- Consensus rules for Bitcoin-block payout snapshots and GridPool-block payment transitions.
 - State identifiers, duplicate handling, and payout attribution.
 - Transport-independent validation requirements.
 - Reference HTTP, encrypted session, and UDP fast-relay transports.
@@ -52,8 +52,8 @@ GridPool internode consensus is designed to provide:
 - Trustless verification of submitted shares by peers.
 - Payout weighting by proof-of-work rather than by node identity.
 - Sybil resistance through work-ranked shares.
-- Fast convergence around the strongest candidate payout list.
-- Tolerance of latency-driven race conditions near round rotation.
+- Fast convergence around the strongest active payout snapshot and unpaid Work Set.
+- Tolerance of latency-driven race conditions near Bitcoin-block snapshot boundaries.
 - Privacy of transaction selection in ordinary share proofs.
 
 ## 3. Terminology
@@ -74,8 +74,9 @@ Different teams or incompatible parameter sets MUST use different network IDs.
 
 Round:
 
-The interval during which the current Winners List is used as the shared payout
-list and new valid shares compete for the next Winners List.
+The interval between GridPool payment events. In protocol V2, ordinary Bitcoin
+blocks may create new payout snapshots inside a round without clearing the
+unpaid Work Set.
 
 Slot 0:
 
@@ -84,14 +85,33 @@ finds the Bitcoin block or share. Slot 0 is not part of the shared Winners List.
 
 Winners List:
 
-The current shared payout list that all honest nodes expect to appear in
-candidate block coinbase transactions after slot 0. The Winners List defines the
-shared payout recipients for the current round.
+The active post-slot-0 payout list that honest nodes expect to appear in
+candidate block coinbase transactions. In protocol V2, this is the active
+payout snapshot built from unpaid work.
 
 On Deck List:
 
-The ranked list of the best valid shares found during the current round. At
-round rotation, the On Deck List becomes the next Winners List.
+A UI and compatibility term for the highest-ranked unpaid share proofs. In
+protocol V2 the authoritative structure is the unpaid Work Set; it is not
+blindly cleared at every GridPool block.
+
+Unpaid Work Set:
+
+A bounded reserve of valid, unpaid share proofs ranked by difficulty. The
+reference default reserve limit is `sharedWinnerSlotCount * 3`, currently
+`299 * 3 = 897` proofs.
+
+Active Payout Snapshot:
+
+The snapshot of the top unpaid work currently used to build GridPool-compatible
+block templates. Every new Bitcoin block creates a new active payout snapshot.
+This does not remove proofs from the unpaid Work Set.
+
+Paid Snapshot:
+
+The active payout snapshot that was actually paid by a validated GridPool block.
+Nodes record the paid snapshot ID and paid proof IDs for lineage and duplicate
+payment prevention.
 
 Share Proof:
 
@@ -102,11 +122,11 @@ the full transaction list.
 
 Current State:
 
-The locked Winners List for the active round.
+The active payout snapshot for the current Bitcoin tip.
 
 Candidate State:
 
-The current On Deck List for the next round.
+The current unpaid Work Set and its strongest potential payout snapshot.
 
 State Bundle:
 
@@ -118,7 +138,7 @@ GridPool Block:
 
 A Bitcoin block whose coinbase transaction pays slot 0 plus the current
 GridPool Winners List, and whose header hash satisfies the Bitcoin network
-target. A GridPool block is the production round-rotation event.
+target. A GridPool block is the production payment event.
 
 ## 4. Network Parameters
 
@@ -128,16 +148,19 @@ Each GridPool network is defined by at least:
 - `boot_network_id`
 - Bitcoin network, for example `mainnet` or `testnet4`
 - shared winner slot count
-- genesis Winners List
-- round trigger mode
+- Work Set reserve multiplier
+- support-fee status and canonical support-fee address
+- snapshot and payment transition rules
 
 The reference beta uses:
 
-- protocol version `1`
+- protocol version `2`
 - `mainnet-beta` for the mainnet public beta network
 - `testnet4-beta` for the Testnet4 public beta network
 - 299 shared winner slots, producing 300 total conceptual payout slots including
   slot 0
+- a default Work Set reserve multiplier of `3`, for 897 retained unpaid proofs
+- an optional canonical Grid Labs support slot enabled by default
 
 `boot_network_id` SHOULD encode all parameters that would make two nodes
 incompatible. At minimum, mainnet and Testnet4 MUST NOT share the same
@@ -153,12 +176,28 @@ Every valid GridPool candidate block template has a coinbase payout structure
 with two logical parts:
 
 1. Slot 0, controlled by the share finder or block finder.
-2. The current Winners List, controlled by GridPool round state.
+2. The active payout snapshot, controlled by GridPool snapshot state.
 
-The shared portion of the block subsidy is divided equally across the current
-Winners List entries. If the same script appears multiple times in the Winners
-List, an implementation MAY compress those entries into one coinbase output with
-the summed value, provided the aggregate value by scriptPubKey is equivalent.
+The reference beta uses 300 conceptual payout slots. Each slot payout value is
+`blockSubsidy / 300`, rounded down to whole satoshis. Slot 0 receives the
+unassigned coinbase value, which includes one conceptual slot, any subsidy
+remainder, and all transaction fees.
+
+If the support fee is enabled, the post-slot-0 output order is:
+
+1. the canonical Grid Labs support output;
+2. up to 298 shared proof payouts sorted by proof difficulty.
+
+If the support fee is disabled, the post-slot-0 output order is up to 299 shared
+proof payouts sorted by proof difficulty.
+
+The support fee address is canonical. A node MAY enable or disable the canonical
+support slot, but MUST NOT replace it with a custom support address and still
+claim compatibility with the reference support-fee variant.
+
+If the same script appears multiple times in the payout snapshot, an
+implementation MAY compress those entries into one coinbase output with the
+summed value, provided the aggregate value by scriptPubKey is equivalent.
 
 Slot 0 attribution is consensus-critical. For every untrusted share, peers MUST
 derive the miner payout identity from the decoded slot-0 scriptPubKey inside the
@@ -178,6 +217,8 @@ A full share proof contains:
 - `coinbaseHex`: coinbase transaction, hex encoded.
 - `merklePath`: ordered list of 32-byte Merkle branch hashes, hex encoded.
 - `prevBlockHash`: optional displayed parent block hash.
+- `payoutSnapshotId`: optional active snapshot identifier the share was mined
+  against.
 - `minerAddress`: optional metadata only.
 - `username`: optional metadata only.
 - `scriptPubKeyHex`: optional decoded slot-0 script metadata.
@@ -217,7 +258,9 @@ For every share proof from an untrusted source, a node MUST:
 8. Verify that the rebuilt Merkle root equals the header Merkle root.
 9. Parse the coinbase outputs.
 10. Decode slot 0 into a supported standard payout script and address.
-11. Verify that the shared payout outputs match the current Winners List.
+11. Verify that the shared payout outputs match the active payout snapshot, or a
+    retained recent snapshot context when `payoutSnapshotId` is present or the
+    share was mined shortly before a later Bitcoin-block snapshot.
 12. Double-SHA256 the 80-byte block header.
 13. Compute actual share difficulty from the header hash.
 14. Determine whether the share is a Bitcoin block by comparing the header hash
@@ -236,7 +279,8 @@ An implementation MUST reject a share if:
 - the coinbase is malformed;
 - the Merkle root does not match;
 - slot 0 cannot be decoded as a supported payout script;
-- the shared payout outputs do not match the expected Winners List;
+- the shared payout outputs do not match the expected active or retained payout
+  snapshot;
 - the computed difficulty is below the implementation's minimum useful floor;
 - the share is a duplicate of a previously seen share ID.
 
@@ -262,33 +306,48 @@ A Merkle root by itself does not prove inclusion of a specific non-coinbase
 transaction. A txid plus a Merkle branch can prove inclusion, but that is outside
 the normal GridPool share proof.
 
-## 9. On Deck List Rules
+## 9. Unpaid Work Set and Snapshot Rules
 
-Each node maintains at most `N` On Deck share proofs, where `N` is the shared
-winner slot count.
+Each node maintains a bounded unpaid Work Set of share proofs. The default
+reserve limit is:
 
-A valid share belongs to the current candidate state if:
+```text
+work_set_reserve_limit = shared_winner_slot_count * 3
+```
 
-- it validates against the current Winners List;
-- it builds on an accepted parent block for the current round, or it is accepted
+With the reference public beta parameters, this is `299 * 3 = 897` proofs.
+
+A valid share may enter the unpaid Work Set if:
+
+- it validates against the active payout snapshot or a retained snapshot context;
+- it builds on an accepted parent block for the current tip, or it is accepted
   under an implementation's fresh-parent policy;
 - it has a unique share ID;
-- it ranks within the top `N` known shares by difficulty.
+- it ranks within the reserve limit.
 
 The deterministic ranking order is:
 
 1. Higher computed difficulty first.
 2. Lexicographically smaller `shareId` first as the tie-breaker.
 
-The On Deck payout list is built from the ranked share proofs. Each proof
-contributes one slot attributed to its slot-0 address. Multiple slots may belong
-to the same address if that address produced multiple ranked shares.
+Every ordinary Bitcoin block creates a new active payout snapshot from the top
+unpaid proofs. This snapshot operation MUST NOT remove proofs from the unpaid
+Work Set.
+
+When a validated GridPool block pays the active snapshot, nodes remove only the
+proof IDs that were actually paid by that snapshot. Unpaid reserve proofs remain
+eligible for later snapshots. This paid-once lineage is the core V2 replacement
+for destructive On Deck clearing.
+
+Each paid proof contributes one shared payout slot attributed to its slot-0
+address. Multiple slots may belong to the same address if that address produced
+multiple ranked shares.
 
 A node MAY accept or record valid lower-difficulty shares for diagnostics or
 local hashrate estimation, but such shares do not affect candidate state and
-SHOULD NOT be relayed to peers unless they can enter the top `N`.
+SHOULD NOT be relayed to peers unless they can enter the unpaid Work Set.
 
-## 10. Candidate State ID
+## 10. Candidate Work Set State ID
 
 The reference candidate state ID is:
 
@@ -308,17 +367,17 @@ Each ranked share line is:
 index + "|" + slot0ScriptPubKeyHex + "|" + canonicalDifficulty + "|" + shareId + "\n"
 ```
 
-Shares are ordered by the On Deck ranking rules. `index` starts at `0`.
+Shares are ordered by the Work Set ranking rules. `index` starts at `0`.
 
 The first reference implementation uses the C# round-trip floating point string
 for `canonicalDifficulty`. This is acceptable for the beta reference network,
 but future versions SHOULD replace floating-point difficulty with an integer
 work/target representation to make cross-language implementations less fragile.
 
-## 11. Locked State ID
+## 11. Active Snapshot State ID
 
-When a candidate state is locked by a round-rotation event, the reference locked
-state ID is:
+When an active payout snapshot is created from unpaid work, the reference state
+ID is:
 
 ```text
 sha256(utf8(
@@ -333,38 +392,49 @@ sha256(utf8(
 The ranked share line format is identical to the candidate state ID format.
 
 `locked_block_hash` is the normalized hash of the Bitcoin block that caused the
-round rotation. The genesis state uses an empty locked block hash.
+snapshot. The genesis state uses an empty locked block hash.
 
-## 12. Round Rotation
+## 12. Snapshot and Payment Transitions
 
-Round 0 is the genesis round. Its Winners List is a network parameter. In the
-reference public beta, the genesis list contains a single foundation/donation
-address for the selected Bitcoin network.
+Round 0 is the genesis round. Its initial payout list is a network parameter,
+but protocol V2 no longer depends on a donation-only genesis payout to launch
+fairly. Once shares enter the unpaid Work Set, ordinary Bitcoin blocks create
+active snapshots from those proofs.
 
-During a round:
+On every new Bitcoin chain tip:
 
-- the current Winners List defines the shared coinbase payouts;
-- new valid shares compete for the On Deck List;
-- the candidate state ID changes as stronger shares enter the On Deck List.
+1. The node validates or accepts the chain-tip notification according to its
+   Bitcoin-parent policy.
+2. The node ranks the unpaid Work Set.
+3. The top unpaid proofs are converted into a new active payout snapshot.
+4. The current state ID becomes the active snapshot ID.
+5. The current round/tip metadata is advanced.
+6. The unpaid Work Set is preserved.
+7. Miners are instructed to refresh work against the new active snapshot.
 
-In production mode, a round rotates when a valid GridPool block is found and
-accepted by the network policy of the implementation. A valid GridPool block:
+This Bitcoin-block snapshot transition does not by itself prove that GridPool
+was paid. A node MUST NOT process a payment transition from a bare chain-tip
+notification alone.
+
+A payment transition requires a validated GridPool block proof from a DATUM
+client, HTTP/API submitter, or peer relay. A valid GridPool block:
 
 - satisfies Bitcoin proof-of-work for the block target;
-- commits to a coinbase transaction with slot 0 plus the current Winners List;
+- commits to a coinbase transaction with slot 0 plus the active payout snapshot;
 - has a valid Merkle root proof for the submitted coinbase.
 
-At rotation:
+When a valid GridPool block proof is accepted:
 
-1. The current On Deck List is locked.
-2. The locked On Deck List becomes the new Winners List.
-3. The current state ID becomes the locked state ID.
-4. The current round number increments by 1.
-5. The On Deck List is cleared for the new round.
-6. Parent-block context is advanced.
+1. The block proof itself is inserted into the unpaid Work Set if it is not a
+   duplicate and it ranks high enough.
+2. The active payout snapshot is recorded as the paid snapshot.
+3. Only the paid snapshot proof IDs are removed from the unpaid Work Set.
+4. Parent-block context is advanced to the found block.
+5. A new active payout snapshot is built from the remaining unpaid reserve.
+6. State bundles retain paid snapshot metadata for peer convergence.
 
 Deterministic test triggers MAY be used on private test networks, but production
-networks SHOULD rotate only on real GridPool block events.
+networks SHOULD process payments only on real validated GridPool block proofs.
 
 ## 13. Parent Block Handling
 
@@ -379,10 +449,10 @@ source is locally trusted or if the implementation has an authenticated peer
 mechanism for learning fresh headers. If a node accepts such a share, it SHOULD
 record the fresh parent and converge its accepted parent set.
 
-A node SHOULD reject stale old-template shares that pay the wrong Winners List,
-but SHOULD distinguish this from malicious behavior. Short payout-mismatch
-windows are expected immediately after round rotation because miners may still
-have old work queued.
+A node SHOULD reject stale old-template shares that pay the wrong active
+snapshot, but SHOULD distinguish this from malicious behavior. Short
+payout-mismatch windows are expected immediately after Bitcoin-block snapshots
+or GridPool payment transitions because miners may still have old work queued.
 
 ## 14. State Bundle Format
 
@@ -401,55 +471,67 @@ A state bundle contains:
 - `parentBlockHeight`
 - `createdAtUtc`
 - `totalDifficulty`
+- `activeSnapshotId`
+- `paidSnapshotId`
+- `activeSnapshotProofIds`
+- `paidSnapshotProofIds`
+- `supportFeeEnabled`
+- `payoutVariant`
 - `validParentBlockHashes`
 - `winnersList`
 - `proofWinnersList`
 - `shareProofs`
+- `workSetProofs`
+- `snapshotContexts`
 - optional commitment metadata
 
 For a candidate bundle:
 
-- `winnersList` is the On Deck payout list being proposed for the next round.
-- `proofWinnersList` is the current Winners List used to validate the proofs.
+- `winnersList` is the payout snapshot being proposed from the Work Set.
+- `proofWinnersList` is the active snapshot used to validate the proofs.
 - `shareProofs` contains the ranked proofs backing `winnersList`.
+- `workSetProofs` may contain the broader unpaid reserve.
 
 For a locked current-state bundle:
 
-- `winnersList` is the locked Winners List for the active round.
-- `shareProofs` SHOULD contain the proofs that produced it when available.
+- `winnersList` is the active payout snapshot.
+- `shareProofs` SHOULD contain the paid or active snapshot proofs when available.
+- `workSetProofs` SHOULD contain unpaid reserve proofs when available.
+- `snapshotContexts` SHOULD contain retained contexts needed to validate
+  work-set proofs mined against earlier snapshots.
 - proofless snapshots MAY be used for bootstrapping, but proof-backed state is
   preferred.
 
-## 15. Importing Candidate State
+## 15. Importing Candidate Work Set State
 
 When a node receives a candidate state bundle from a peer, it MUST:
 
 1. Verify `protocolVersion` and `networkId`.
 2. Reject if the winner/proof count exceeds the shared winner slot count.
-3. Validate each share proof against `proofWinnersList` or the local current
-   Winners List.
+3. Validate each share proof against `proofWinnersList`, the local active
+   snapshot, or retained snapshot contexts supplied by the bundle.
 4. Rebuild the payout list from the validated proofs.
 5. Verify that the rebuilt payout list equals `winnersList`.
 6. Recompute the candidate state ID.
 7. Reject if the recomputed state ID differs from `stateId`.
 
-If the bundle is valid and refers to the same current state, a node SHOULD adopt
-it when its total difficulty is greater than the local candidate state's total
-difficulty.
+If the bundle is valid and refers to the same active snapshot, a node SHOULD
+merge/adopt it when its Work Set contains stronger unpaid proofs than the local
+candidate state.
 
 This rule gives convergence pressure toward the candidate list with the most
 observed work.
 
-## 16. Importing Locked Current State
+## 16. Importing Active Snapshot State
 
 When a node receives a locked current-state bundle from a peer, it MUST:
 
 1. Verify `protocolVersion` and `networkId`.
 2. Reject impossible winner/proof counts.
-3. Validate share proofs when present.
+3. Validate share proofs and Work Set proofs when present.
 4. Rebuild and verify `winnersList` from proofs when present.
-5. Recompute the locked state ID using `lockedByBlockHash`.
-6. Reject if the recomputed locked state ID differs from `stateId`.
+5. Recompute the active snapshot state ID using `lockedByBlockHash`.
+6. Reject if the recomputed active snapshot state ID differs from `stateId`.
 7. Verify that adopting the state does not obviously move the node backward
    relative to its known chain tip and round number.
 
@@ -458,7 +540,7 @@ A node SHOULD adopt a valid peer locked state if:
 - the local state is empty or genesis-only;
 - the peer round number is greater than the local round number;
 - the peer state is proof-backed and the local state is proofless;
-- the peer state has greater total locked difficulty for the same round; or
+- the peer state has greater total snapshot difficulty for the same tip/round; or
 - the implementation's deterministic tie-breaker prefers the peer state.
 
 The reference tie-breaker for equal total difficulty is lexicographically larger
@@ -595,7 +677,7 @@ The reference datagram header contains:
 
 The encrypted payload is a compact binary full share proof. At mature 300-output
 scale, full coinbase proofs may exceed safe single-datagram size. Future compact
-share formats may reconstruct common Winners List outputs locally and transmit
+share formats may reconstruct common active snapshot outputs locally and transmit
 only slot-0 plus variable coinbase fields, but that is not yet a consensus
 requirement.
 
@@ -613,7 +695,7 @@ account identity. Weight comes from ranked verified work only.
 
 Low-difficulty spam:
 
-Nodes SHOULD advertise the current On Deck admission floor. Peers that continue
+Nodes SHOULD advertise the current Work Set admission floor. Peers that continue
 to send shares far below the floor after being informed of the floor MAY be
 rate-limited or disconnected.
 
@@ -652,7 +734,7 @@ This draft intentionally leaves several areas open:
 - Define optional peer acceptance matrices for censorship and relay-health
   detection.
 - Define canonical serialization independent of the C# reference implementation.
-- Decide whether a future on-chain round commitment should be included in
+- Decide whether a future on-chain snapshot commitment should be included in
   coinbase metadata.
 
 ## 23. Compatibility Guidance
