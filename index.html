@@ -30,6 +30,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#how">How it works</a>
         <a href="#resilience">Threat model</a>
+        <a href="#faq">FAQ</a>
         <a href="#connect">Connect</a>
         <a href="#resources">Resources</a>
         <a href="https://github.com/gridlabs-science/boot-protocol" rel="noreferrer">Source</a>
@@ -283,6 +284,83 @@
         </div>
       </section>
 
+      <section class="section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading">
+          <p class="eyebrow">Common critiques</p>
+          <h2 id="faq-title">Fair questions deserve precise answers.</h2>
+          <p>
+            GridPool is a beta protocol, not a finished theorem. These are the
+            short answers to the objections miners keep raising, with the full
+            modeling roadmap linked below.
+          </p>
+        </div>
+
+        <div class="faq-grid">
+          <details class="faq-item" open>
+            <summary>Is GridPool vulnerable to pool hopping?</summary>
+            <p>
+              Not in the classic sense. A high-difficulty proof is work already
+              performed, and old proofs are displaced as new unpaid work arrives.
+              Leaving after a lucky proof gives up future proof opportunities and
+              slot-0 block-finder upside. That said, this deserves open
+              simulation rather than slogans.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What if a large miner earns slots and leaves?</summary>
+            <p>
+              They may still be paid for valid work they already contributed,
+              but their proofs decay out of the bounded reserve as stronger work
+              arrives. The key question is whether leaving improves expected
+              value versus continuous mining; that is one of the first planned
+              models.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Is this just loose consensus?</summary>
+            <p>
+              GridPool avoids a sharechain, but it still has consensus rules.
+              Nodes verify proof-of-work, Merkle roots, coinbase outputs, slot-0
+              attribution, parent context, payout snapshot context, and duplicate
+              status. Competing states can be compared by verifiable work.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can Sybil nodes gain payout weight?</summary>
+            <p>
+              Not directly. Payout slots are earned by verified proof difficulty,
+              not identities, accounts, IP addresses, or server count. Sybils can
+              still attack networking, so peer selection and anti-DoS work still
+              matters.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can peers censor transactions from share data?</summary>
+            <p>
+              GridPool share messages reveal the coinbase and its Merkle path,
+              not the full transaction set. Peers can verify payout commitments
+              without seeing arbitrary included transactions until a real block
+              is found.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can a majority miner fork the team?</summary>
+            <p>
+              A majority miner can try to mine a private or censoring payout
+              state, but it cannot forge other miners' proofs or rewrite a
+              sharechain because there is no sharechain. This becomes a
+              team-split and censorship-cartel problem, and it is a high-priority
+              adversarial simulation target.
+            </p>
+          </details>
+        </div>
+
+        <div class="section-actions faq-actions">
+          <a class="button" href="https://github.com/gridlabs-science/boot-protocol/blob/main/docs/critic-faq.md" rel="noreferrer">Read full FAQ</a>
+          <a class="button" href="https://github.com/gridlabs-science/boot-protocol/blob/main/docs/modeling-and-simulation-roadmap.md" rel="noreferrer">View modeling roadmap</a>
+        </div>
+      </section>
+
       <section class="section connect-section" id="connect" aria-labelledby="connect-title">
         <div class="section-heading">
           <p class="eyebrow">Public beta connection guide</p>
@@ -295,6 +373,24 @@
             bridge is being prepared as the easier beta on-ramp.
           </p>
         </div>
+
+        <aside class="notice-box firmware-warning" aria-label="Miner firmware compatibility warning">
+          <strong>Firmware compatibility warning for the 300-slot beta</strong>
+          <p>
+            GridPool consensus requires miners to hash the full active payout
+            template. Older stock Bitmain firmware and NiceHash-style clients may
+            be fingerprinted by DATUM into small coinbase variants that omit
+            required GridPool payout outputs. Those shares are rejected as
+            invalid.
+          </p>
+          <p>
+            For now, use DATUM with firmware known to support larger coinbase
+            templates, such as ePIC / PowerPlay-BM, VNish / xminer-class
+            firmware, Whatsminer-class firmware, Bitaxe, or other firmware DATUM
+            fingerprints into larger coinbase classes. Smaller compatibility
+            teams may be added later.
+          </p>
+        </aside>
 
         <div class="connect-layout">
           <article class="connect-card connect-card-primary">
@@ -456,6 +552,16 @@
             <span>Draft spec</span>
             <strong>GridPool internode protocol</strong>
             <small>Consensus rules, share proofs, state sync, and peer relay for compatible implementations.</small>
+          </a>
+          <a class="resource-card" href="https://github.com/gridlabs-science/boot-protocol/blob/main/docs/critic-faq.md" rel="noreferrer">
+            <span>FAQ</span>
+            <strong>Answers for technical critics</strong>
+            <small>Pool hopping, loose consensus, Sybil accounting, censorship, and sharechain comparisons.</small>
+          </a>
+          <a class="resource-card" href="https://github.com/gridlabs-science/boot-protocol/blob/main/docs/modeling-and-simulation-roadmap.md" rel="noreferrer">
+            <span>Research plan</span>
+            <strong>Modeling and simulation roadmap</strong>
+            <small>Open simulations for fairness, majority miners, block withholding, latency, and bandwidth.</small>
           </a>
           <a class="resource-card" href="GridPool 201_ Advanced Architectural Deep Dive.md">
             <span>Markdown</span>

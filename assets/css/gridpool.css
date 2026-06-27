@@ -719,6 +719,46 @@ code {
   min-height: 260px;
 }
 
+.faq-section {
+  position: relative;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(88, 240, 124, 0.06), transparent 48%),
+    rgba(18, 23, 25, 0.84);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  padding: 20px 22px;
+  color: var(--text);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.faq-item summary::marker {
+  color: var(--green);
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 0 22px 22px;
+  font-size: 0.96rem;
+}
+
+.faq-actions {
+  margin-top: 18px;
+}
+
 .connect-section {
   position: relative;
 }
@@ -726,6 +766,22 @@ code {
 .connect-layout {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-bottom: 18px;
+}
+
+.firmware-warning {
+  margin: 0 0 18px;
+  border-color: rgba(255, 178, 63, 0.46);
+  background:
+    linear-gradient(135deg, rgba(255, 178, 63, 0.11), transparent 46%),
+    rgba(18, 23, 25, 0.9);
+}
+
+.firmware-warning strong {
+  color: var(--amber);
+}
+
+.firmware-warning p + p {
+  margin-top: 10px;
 }
 
 .connect-card-primary {
@@ -1030,6 +1086,7 @@ code {
   .comparison-grid,
   .connect-layout,
   .trust-path-grid,
+  .faq-grid,
   .resilience-grid {
     grid-template-columns: 1fr;
   }
